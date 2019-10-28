@@ -30,14 +30,44 @@ local loseObject
 local num1
 local num2
 local numericField
-local numIncorrect
+local numIncorrect = 0
 local points = 5
 local pointsText
 local quesObject
-local quesObjecetText
 local randomOp
 local userAns
 local winObject
+
+-----------------------------------------------------------------------------------------
+
+local correctSound = audio.loadSound("Sounds/correct.mp3")
+local correctSoundChannel
+
+local winnerSound = audio.loadSound("Sounds/won.mp3")
+local winnerSoundChannel
+
+local incorrectSound = audio.loadSound("Sounds/incorrect.mp3")
+local incorrectSoundChannel
+
+local lostSound = audio.loadSound("Sounds/lose.mp3")
+local lostSoundChannel
+
+-----------------------------------------------------------------------------------------
+-- creating first ball
+local heart = display.newImage("Images/heart.png", 950, 66)
+	
+	heart.width = 100
+	heart.height = 100
+
+local heart2 = display.newImage("Images/heart.png", 830, 66)
+
+	heart2.width = 100
+	heart2.height = 100
+
+local heart3 = display.newImage("Images/heart.png", 710, 66)
+	
+	heart3.width = 100
+	heart3.height = 100
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNTIONS
@@ -59,7 +89,7 @@ local function AskQuestion()
 		correctAns = num1 + num2
 
 		-- create question in text object
-		quesObjecetText = num1 .. " + " .. num2 .. " = "
+		quesObject.text = num1 .. " + " .. num2 .. " ="
 
 	elseif(randomOp == 2) then
 
@@ -73,14 +103,14 @@ local function AskQuestion()
 			correctAns = num2 - num1
 			
 			-- create question in text object
-			quesObjecetText = num2 .. " - " .. num1 .. " = "
+			quesObject.text = num2 .. " - " .. num1 .. " = "
 		else
 
 			-- the correct ans
 			correctAns = num1 - num2
 			
 			-- create question in text object
-			quesObjecetText = num1 .. " - " .. num2 .. " = "
+			quesObject.text = num1 .. " - " .. num2 .. " = "
 		end
 
 	elseif(randomOp == 3) then
@@ -93,7 +123,7 @@ local function AskQuestion()
 		correctAns = num1 * num2
 
 		-- create question in text object
-		quesObjecetText = num1 .. " * " .. num2 .. " = "
+		quesObject.text = num1 .. " * " .. num2 .. " = "
 
 	elseif(randomOp == 4) then
 
@@ -105,18 +135,18 @@ local function AskQuestion()
 		correctAns = num1 / num2
 
 		-- create question in text object
-		quesObjecetText = num1 .. " / " .. num2 .. " = "
+		quesObject.text = num1 .. " / " .. num2 .. " = "
 	end
-	quesObjecetText.isVisible = true
 end
 
 local function Hide()
-	correctAns.isVisible = false
+
 	lives.isVisible = true
 	loseObject.isVisible = false
 	points.isVisible = true
 	pointsText = false
 	winObject.isVisible = false
+	quesObject.isVisible = true
 	AskQuestion()
 end
 
@@ -134,6 +164,8 @@ local function NumericFieldListener( event )
 		-- if the user ans is correct
 		if(user == correctAns) then
 
+			correctSoundChannel = audio.play(correctSound)
+
 			-- show correct object
 			correctObject.isVisible = true
 
@@ -144,10 +176,12 @@ local function NumericFieldListener( event )
 			pointsText.text = "points = " .. points
 
 			-- add timer
-			timer.performWithDelay(2000, HideCorrect)
+			timer.performWithDelay(2000, Hide)
 
 			-- show "you win!" after 5 points		
 			if (points == 5) then
+
+				winnerSoundChannel = audio.play(winnerSound)
 
 				-- this object isn't visible
 				correctObject.isVisible = false
@@ -156,10 +190,12 @@ local function NumericFieldListener( event )
 				winObject.isVisible = true
 
 				-- add timer
-				timer.performWithDelay(2000, HideWin)
+				timer.performWithDelay(2000, Hide)
 			end
 
 		else -- if user ans is wrong
+
+			incorrectSoundChannel = audio.play(incorrectSound)
 
 			-- create incorrect text object
 			incorrectObject.text = ("Inncorect! The correct answer was " .. correctAns .. " .DK ")
@@ -168,10 +204,12 @@ local function NumericFieldListener( event )
 			numIncorrect = numIncorrect + 1
 
 			-- add timer
-			timer.performWithDelay(2000, HideCorrect)
+			timer.performWithDelay(2000, Hide)
 
 			-- display game over after 3 wrong answers
 			if (numIncorrect == 3) then
+
+				lostSoundChannel = audio.play(lostSound)
 
 				-- this isn't visible
 				incorrectObject.isVisible = false
@@ -180,7 +218,7 @@ local function NumericFieldListener( event )
 				loseObject.isVisible = true
 				
 				-- added timer
-				timer.performWithDelay(2000, HideLose)
+				timer.performWithDelay(2000, Hide)
 			end
 		end
 
