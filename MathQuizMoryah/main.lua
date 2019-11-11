@@ -89,6 +89,7 @@ local function AskQuestion()
 
 	-- chose a random operators
 	randomOp = math.random(1,5)
+	randomOp = 1
 	
 	-- chose a random operators
 	if(randomOp == 1) then
