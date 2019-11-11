@@ -25,13 +25,14 @@ local scene = composer.newScene( sceneName )
 local logo
 local scrollXSpeed = 10
 local scrollYSpeed = -4
+
+
+--------------------------------------------------------------------------------------------
+-- SOUNDS
+--------------------------------------------------------------------------------------------
+
 local metroidSounds = audio.loadSound("Sounds/metroid.mp3")
 local metroidSoundsChannel
-
------------------------------------------------------------------------------------------
-
--- Scale the image by 200% (x) and 50% (y)
-
 
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -39,14 +40,24 @@ local metroidSoundsChannel
 
 -- The function that will go to the main menu 
 local function gotoMainMenu()
-    composer.gotoScene( "main_menu" )
-end
+   -- composer.gotoScene( "main_menu" )
+end--
 
 -- Creating Transition Function to Credits Page
 local function mainMenuTransition( )       
     composer.gotoScene( "main_menu", {effect = "zoomInOutFade", time = 500})
 end 
 
+-----------------------------------------------------------------------------------------
+
+local function FadeLogo(event)
+    -- change the transparency of the logo so that the logo fades zoomInOutFade
+    logo.alpha = logo.alpha - 0.01
+end
+
+function scale( event )
+    logo:scale( 1.001, 0.93 )
+end
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -58,7 +69,7 @@ function scene:create( event )
     local sceneGroup = self.view
 
     -- set the background to be black
-    display.setDefault("background", 100, 100, 100)
+    display.setDefault("background", 233/255, 233/255, 255/255)
 
     -- Insert the logo image
     logo = display.newImageRect("Images/CompanyLogoMoryah@2x.png", 444, 444)
@@ -79,31 +90,32 @@ function scene:show( event )
 
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
-
     -----------------------------------------------------------------------------------------
-
     local phase = event.phase
-
     -----------------------------------------------------------------------------------------
-
     -- Called when the scene is still off screen (but is about to come on screen).
     if ( phase == "will" ) then
        
     -----------------------------------------------------------------------------------------
-
     elseif ( phase == "did" ) then
+        -- set the image to be transparent
+        logo.alpha = 1
+
         -- start the splash screen music
         metroidSoundsChannel = audio.play( metroidSounds )
 
         -- Call the gotoMainMenu function as soon as we enter the frame.
-   --     Runtime:addEventListener({effect = "zoomInOutFade", time = 500}, gotoMainMenu)
+        --Runtime:addEventListener({effect = "zoomInOutFade", time = 500}, gotoMainMenu)
 
         -- Go to the main menu screen after the given time.
-        timer.performWithDelay ( 3000, gotoMainMenu)          
-        
+        --timer.performWithDelay ( 3000, gotoMainMenu)   
+
+        Runtime:addEventListener("enterFrame", FadeLogo)
+        Runtime:addEventListener("enterFrame", scale)       
     end
 
 end --function scene:show( event )
+
 
 -----------------------------------------------------------------------------------------
 
@@ -115,12 +127,10 @@ function scene:hide( event )
     local phase = event.phase
 
     -----------------------------------------------------------------------------------------
-
     -- Called when the scene is on screen (but is about to go off screen).
     -- Insert code here to "pause" the scene.
     -- Example: stop timers, stop animation, stop audio, etc.
     if ( phase == "will" ) then  
-
     -----------------------------------------------------------------------------------------
 
     -- Called immediately after scene goes off screen.
@@ -139,9 +149,7 @@ function scene:destroy( event )
 
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
-
     -----------------------------------------------------------------------------------------
-
 
     -- Called prior to the removal of scene's view ("sceneGroup").
     -- Insert code here to clean up the scene.

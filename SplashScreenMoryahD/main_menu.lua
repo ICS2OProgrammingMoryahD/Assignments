@@ -20,14 +20,46 @@ mainMenu = "main_menu"
 
 -- Creating Scene Object
 local scene = composer.newScene( mainMenu )
-local bkg
-bkg = display.newImageRect("Images/bkg.jpg", 1150, 900)
-bkg.x = 500
-bkg.y = 400
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
+
+-- The function called when the screen doesn't exist
+function scene:create( event )
+
+    -- Creating a group that associates objects with the scene
+    local sceneGroup = self.view
+
+end -- function scene:create( event )
+
+--------------------------------------------------------------------------------------------
+
+-- The function called when the scene is issued to appear on screen
+function scene:show( event )
+
+    -- Creating a group that associates objects with the scene
+    local sceneGroup = self.view
+end --function scene:show( event )
+
+-----------------------------------------------------------------------------------------
+
+-- The function called when the scene is issued to leave the screen
+function scene:hide( event )
+
+    -- Creating a group that associates objects with the scene
+    local sceneGroup = self.view
+    local phase = event.phase
+
+    if ( phase == "will" ) then  
+
+    -----------------------------------------------------------------------------------------
+
+    -- Called immediately after scene goes off screen.
+    elseif ( phase == "did" ) then
+    end
+
+end --function scene:hide( event )
 -- The function called when the scene is issued to be destroyed
 function scene:destroy( event )
 
@@ -44,6 +76,9 @@ end -- function scene:destroy( event )
 -- EVENT LISTENERS
 -----------------------------------------------------------------------------------------
 
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 
 -----------------------------------------------------------------------------------------
