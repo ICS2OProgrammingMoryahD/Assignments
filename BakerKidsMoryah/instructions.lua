@@ -2,8 +2,8 @@
 --
 -- credits_screen.lua
 -- Created by: Moryah
--- Special thanks to Wal Wal for helping in the design of this framework.
--- Date: Oct. 24, 2019
+-- Special thanks to Wal Wal for helping in the design of this framework.ds
+-- Date: nov. 21, 2019
 -- Description: This is the credits page, displaying a back button to the main menu.
 -----------------------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ function scene:create( event )
     -------------------------------------------------------------------------------------
 
     -- Insert the background image and set it to the center of the screen
-    bkg_image = display.newImageRect("Images/InstructionsScreenMoryah@2x.png",
+    bkg_image = display.newImageRect("Images/InstructionsScreenMoryah.png",
      display.contentWidth
         , display.contentHeight)
     bkg_image.x = display.contentCenterX
@@ -85,8 +85,8 @@ function scene:create( event )
         height = 70,
 
         -- Setting Visual Properties
-        defaultFile = "Images/BackButtonUnpressedMoryah@2x.png",
-        overFile = "Images/BackButtonPressedMoryah@2x.png",
+        defaultFile = "Images/BackButtonUnpressedMoryah.png",
+        overFile = "Images/BackButtonPressedMoryah.png",
 
         -- Setting Functional Properties
         onRelease = BackTransition

@@ -2,8 +2,8 @@
 -----------------------------------------------------------------------------------------
 --
 -- level1_screen.lua
--- Created by: Your Name
--- Date: Month Day, Year
+-- Created by: Moryah
+-- Date: nov. 21, 2019
 -- Description: This is the level 1 screen of the game.
 -----------------------------------------------------------------------------------------
 
@@ -78,8 +78,8 @@ function scene:create( event )
         height = 70,
 
         -- Setting Visual Properties
-        defaultFile = "Images/BackButtonUnpressedMoryah@2x.png",
-        overFile = "Images/BackButtonPressedMoryah@2x.png",
+        defaultFile = "Images/BackButtonUnpressedMoryah.png",
+        overFile = "Images/BackButtonPressedMoryah.png",
 
         -- Setting Functional Properties
         onRelease = BackTransition

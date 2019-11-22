@@ -73,7 +73,7 @@ function scene:create( event )
     -----------------------------------------------------------------------------------------
 
     -- Insert the background image and set it to the center of the screen
-    bkg_image = display.newImage("Images/MainMenuMoryah@2x.png")
+    bkg_image = display.newImage("Images/MainMenuMoryah.png")
     bkg_image.x = display.contentCenterX
     bkg_image.y = display.contentCenterY
     bkg_image.width = display.contentWidth
@@ -123,8 +123,8 @@ function scene:create( event )
             height = 70,
 
             -- Insert the images here
-            defaultFile = "Images/CreditsButtonUnpressedMoryah@2x.png", 150, 100,
-            overFile = "Images/CreditsButtonPressedMoryah@2x.png", 150, 100,
+            defaultFile = "Images/CreditsButtonUnpressedMoryah.png", 150, 100,
+            overFile = "Images/CreditsButtonPressedMoryah.png", 150, 100,
 
             -- When the button is released, call the Credits transition function
             onRelease = CreditsTransition
@@ -144,8 +144,8 @@ function scene:create( event )
             height = 70,
 
             -- Insert the images here
-            defaultFile = "Images/InstructionsButtonUnpressedMoryah@2x.png", 150, 100,
-            overFile = "Images/InstructionsButtonPressedMoryah@2x.png", 150, 100,
+            defaultFile = "Images/InstructionsButtonUnpressedMoryah.png", 150, 100,
+            overFile = "Images/InstructionsButtonPressedMoryah.png", 150, 100,
 
             -- When the button is released, call the Credits transition function
             onRelease = InstructionsTransition
