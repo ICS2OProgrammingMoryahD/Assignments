@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------------
 --
 -- main_menu.lua
--- Created by: Your Name
--- Date: Month Day, Year
+-- Created by: Moryah
+-- Date: nov. 21, 2019
 -- Description: This is the main menu, displaying the credits, instructions & play buttons.
 -----------------------------------------------------------------------------------------
 
@@ -34,12 +34,6 @@ local bkg_image
 local playButton
 local creditsButton
 local instructionsButton
-
------------------------------------------------------------------------------------------
--- SOUND
------------------------------------------------------------------------------------------
-
-bkgmusicSound = audio.loadSound( "Sounds/")
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
