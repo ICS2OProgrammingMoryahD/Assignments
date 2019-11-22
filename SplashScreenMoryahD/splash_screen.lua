@@ -116,7 +116,6 @@ function scene:show( event )
 
 end --function scene:show( event )
 
-
 -----------------------------------------------------------------------------------------
 
 -- The function called when the scene is issued to leave the screen
