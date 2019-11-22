@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------------
 --
 -- main.lua
--- Created by: Your Name
--- Date: Month Day, Year
+-- Created by: Moryah
+-- Date: nov. 21, 2019
 -- Description: This calls the splash screen of the app to load itself.
 -----------------------------------------------------------------------------------------
 
