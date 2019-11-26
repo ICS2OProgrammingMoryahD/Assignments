@@ -102,8 +102,8 @@ function scene:create( event )
             height = 70,
 
             -- Insert the images here
-            defaultFile = "Images/PlayButtonUnPressedNicR.png", 150, 100,
-            overFile = "Images/PlayButtonPressedNicR.png", 150, 100,
+            defaultFile = "Images/PlayButtonUnPressedNicR.png", 170, 120,
+            overFile = "Images/PlayButtonPressedNicR.png", 170, 120,
 
             -- When the button is released, call the Level1 screen transition function
             onRelease = Level1ScreenTransition          
@@ -123,8 +123,8 @@ function scene:create( event )
             height = 70,
 
             -- Insert the images here
-            defaultFile = "Images/CreditsButtonUnpressedMoryah.png", 150, 100,
-            overFile = "Images/CreditsButtonPressedMoryah.png", 150, 100,
+            defaultFile = "Images/CreditsButtonUnpressedMoryah.png", 170, 120,
+            overFile = "Images/CreditsButtonPressedMoryah.png", 170, 120,
 
             -- When the button is released, call the Credits transition function
             onRelease = CreditsTransition
@@ -144,8 +144,8 @@ function scene:create( event )
             height = 70,
 
             -- Insert the images here
-            defaultFile = "Images/InstructionsButtonUnpressedMoryah.png", 150, 100,
-            overFile = "Images/InstructionsButtonPressedMoryah.png", 150, 100,
+            defaultFile = "Images/InstructionsButtonUnpressedMoryah.png", 170, 120,
+            overFile = "Images/InstructionsButtonPressedMoryah.png", 170, 120,
 
             -- When the button is released, call the Credits transition function
             onRelease = InstructionsTransition
