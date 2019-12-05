@@ -10,65 +10,67 @@
 -----------------------------------------------------------------------------------------
 -- INITIALIZATIONS
 -----------------------------------------------------------------------------------------
-
 -- Use Composer Libraries
 local composer = require( "composer" )
 local widget = require( "widget" )
 
 -----------------------------------------------------------------------------------------
-
 -- Naming Scene
 sceneName = "level1_screen"
 
 -----------------------------------------------------------------------------------------
-
 -- Creating Scene Object
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
-
 -- The local variables for this scene
 local bkg_image
+local countDownTimer
+local clockText
+local words = 0
+local wordsText
 local lives = 3
+
+-----------------------------------------------------------------------------------------
+-- the words
+local bakingPowder
+local bakingPowderObject
+local bakingSoda
+local bakingSodaObject
+local butter
+local butterObject
+local chocolate
+local chocolateObject
+local egg
+local eggObject
+local flour
+local flourObject
+local foodColouring
+local foodColouringObject
+local icing
+local icingObject
+local milk
+local milkObject
+local sprinkles
+local sprinklesObject
+local sugar
+local sugarObject
+local vanilla
+local vanillaObject
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL VARIABLES
 -----------------------------------------------------------------------------------------
-
--- set timer for 2 minutes
 TOTALSECONDS = 120
 secondsLeft = 120
-
--- creating hearts
-local heart = display.newImage("Images/heart.png", 950, 66)
-    
-    heart.width = 100
-    heart.height = 100
-
-local heart2 = display.newImage("Images/heart.png", 830, 66)
-
-    heart2.width = 100
-    heart2.height = 100
-
-local heart3 = display.newImage("Images/heart.png", 710, 66)
-    
-    heart3.width = 100
-    heart3.height = 100
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
-
--- Creating Transitioning Function back to main menu
-local function BackTransition( )
-    composer.gotoScene( "main_menu", {effect = "crossFade", time = 500})
-end
-
-
 -- function that calls the timer
-function UpdateTime()
+local function UpdateTime()
     -- decrement the number of seconds
     secondsLeft = secondsLeft - 1
     --timer.performWithDelay(1000)
@@ -78,42 +80,72 @@ function UpdateTime()
 
     if (secondsLeft == 0 ) then
 
-        -- all lives are taken after 0 seconds left
-        lives = lives - 1
+        -- everytime user gets answer wrong take away 1 life
+        lives = 0
 
         timer.cancel(countDownTimer)
 
         -- reset the number of seconds left
         secondsLeft = TOTALSECONDS
+        timer.performWithDelay(1000, Visible)
     end
 end
 
 -- function that calls the timer
-function StartTimer(event)
+local function StartTimer(event)
 
     -- create a countdown timer that loops infinitely
     countDownTimer = timer.performWithDelay( 1000, UpdateTime, 0)
     countDownTimer.isVisible = true
 
     -- coordinates
-    countDownTimer.x = 20
-    countDownTimer.y = 20
+    countDownTimer.x = 1000
+    countDownTimer.y = 50
 end
 
-local function Hide()
+local function Words()
+    -- first make the random Words
+    
+end
 
-    countDownTimer.isVisible = true
+-- Creating Transitioning Function back to main menu
+local function BackTransition( )
+    composer.gotoScene( "main_menu", {effect = "crossFade", time = 500})
+end
+
+local function Visible()
+
     heart3.isVisible = true
     heart2.isVisible = true
     heart.isVisible = true
-    pointsText.isVisible = true
-    AskQuestion()
+    countDownTimer.isVisible = true
+    wordsText.isVisible = true
+    bakingPowderObject.isVisible = true
+    bakingSodaObject.isVisible = true
+    butterObject.isVisible = true
+    chocolateObject.isVisible = true
+    eggObject.isVisible = true
+    flourObject.isVisible = true
+    foodColouringObject.isVisible = true
+    icingObject.isVisible = true
+    milkObject.isVisible = true
+    sprinklesObject.isVisible = true
+    sugarObject.isVisible = true
+    vanillaObject.isVisible = true
+end
+
+local function Words()
+    -- first make the random Words 
+end
+
+-- Creating Transitioning Function back to main menu
+local function BackTransition()
+    composer.gotoScene( "main_menu", {effect = "crossFade", time = 500})
 end
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
-
 -- The function called when the screen doesn't exist
 function scene:create( event )
 
@@ -129,11 +161,65 @@ function scene:create( event )
     bkg_image.width = display.contentWidth
     bkg_image.height = display.contentHeight
 
-    -- Send the background image to the back layer so all other objects can be on top
-    bkg_image:toBack()
+    heart = display.newImage("Images/heart.png", 810, 35)
+    heart.width = 66
+    heart.height = 66
 
-        -- Insert background image into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( bkg_image )    
+    heart2 = display.newImage("Images/heart.png", 880, 35)
+    heart2.width = 66
+    heart2.height = 66
+
+    heart3 = display.newImage("Images/heart.png", 950, 35)
+    heart3.width = 66
+    heart3.height = 66
+
+    -----------------------------------------------------------------------------------------
+    -- OBJECT CREATION
+    -----------------------------------------------------------------------------------------
+    -- display thw word texts
+
+    bakingPowderObject = display.newText( "Baking Powder", 205, 100, nil, 44 )
+    bakingPowderObject:setTextColor(1, 1, 1)
+
+    bakingSodaObject = display.newText( "Baking Soda", 177, 200, nil, 44 )
+    bakingSodaObject:setTextColor(1, 1, 1)
+
+    butterObject = display.newText( "Butter", 146, 150, nil, 44 )
+    butterObject:setTextColor(1, 1, 1)
+
+    chocolateObject = display.newText( "Chocolate", 500, 200, nil, 44 )
+    chocolateObject:setTextColor(1, 1, 1)
+
+    eggObject = display.newText( "Egg", 500, 100, nil, 44 )
+    eggObject:setTextColor(1, 1, 1)
+
+    flourObject = display.newText( "Flour", 700, 100, nil, 44 )
+    flourObject:setTextColor(1, 1, 1)
+
+    foodColouringObject = display.newText( "Food Colouring", 460, 150, nil, 44 )
+    foodColouringObject:setTextColor(1, 1, 1)
+
+    icingObject = display.newText( "Icing", 700, 150, nil, 44 )
+    icingObject:setTextColor(1, 1, 1)
+
+    milkObject = display.newText( "Milk", 700, 200, nil, 44 )
+    milkObject:setTextColor(1, 1, 1)
+
+    sprinklesObject = display.newText( "Sprinkles", 900, 100, nil, 44 )
+    sprinklesObject:setTextColor(1, 1, 1)
+
+    sugarObject = display.newText( "Sugar", 900, 150, nil, 44 )
+    sugarObject:setTextColor(1, 1, 1)
+
+    vanillaObject = display.newText( "Vanilla", 900, 200, nil, 44 )
+    vanillaObject:setTextColor(1, 1, 1)
+
+    -- display the amount of words as a text object
+    wordsText = display.newText("point = " .. words, 512, 573, nil, 44)
+    wordsText:setTextColor(0, 0, 0)
+
+    clockText = display.newText("" .. secondsLeft, 77, 40, nil, 66)
+    clockText:setTextColor(1, 0, 0)
 
     -- Creating Back Button
     backButton = widget.newButton( 
@@ -143,6 +229,7 @@ function scene:create( event )
         y = display.contentHeight*9/10,
 
         -- Setting Dimensions
+
         width = 150,
         height = 70,
 
@@ -155,25 +242,36 @@ function scene:create( event )
      } )
 
 -------------------------------------------------------------------------------------
-
-    -- Associating Buttons with this scene
+-- Insert images into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( bkg_image ) 
     sceneGroup:insert( backButton )
-    
+    sceneGroup:insert( heart )
+    sceneGroup:insert( heart2 )
+    sceneGroup:insert( heart3 )
+    sceneGroup:insert( wordsText )
+    sceneGroup:insert( bakingPowderObject )
+    sceneGroup:insert( bakingSodaObject )
+    sceneGroup:insert( butterObject )
+    sceneGroup:insert( chocolateObject )
+    sceneGroup:insert( eggObject )
+    sceneGroup:insert( flourObject )
+    sceneGroup:insert( foodColouringObject )
+    sceneGroup:insert( icingObject )
+    sceneGroup:insert( milkObject )
+    sceneGroup:insert( sprinklesObject )
+    sceneGroup:insert( sugarObject )
+    sceneGroup:insert( vanillaObject )
+    sceneGroup:insert( clockText )
+
 end --function scene:create( event )
 
 -----------------------------------------------------------------------------------------
-
 -- The function called when the scene is issued to appear on screen
 function scene:show( event )
 
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
     local phase = event.phase
-
-    heart.isVisible = true
-    heart2.isVisible = true
-    heart3.isVisible = true
-
 
     -----------------------------------------------------------------------------------------
 
@@ -187,13 +285,17 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+        -----------------------------------------------------------------------------------------
+        -- FUNTION CALLS
+        -----------------------------------------------------------------------------------------
+        --call the functions
+        StartTimer()
+        Visible()
 
     end
 
 end --function scene:show( event )
-
 -----------------------------------------------------------------------------------------
-
 -- The function called when the scene is issued to leave the screen
 function scene:hide( event )
 
@@ -217,7 +319,6 @@ function scene:hide( event )
 end --function scene:hide( event )
 
 -----------------------------------------------------------------------------------------
-
 -- The function called when the scene is issued to be destroyed
 function scene:destroy( event )
 
@@ -232,15 +333,18 @@ function scene:destroy( event )
 
 end -- function scene:destroy( event )
 
+
+
 -----------------------------------------------------------------------------------------
 -- EVENT LISTENERS
 -----------------------------------------------------------------------------------------
-
 -- Adding Event Listeners
 scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
+
+
 
 -----------------------------------------------------------------------------------------
 

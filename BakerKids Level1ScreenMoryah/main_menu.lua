@@ -34,10 +34,40 @@ local bkg_image
 local playButton
 local creditsButton
 local instructionsButton
+local muteButton
+local unmuteButton
 
+-----------------------------------------------------------------------------------------
+-- GLOBAL VARIABLES
+-----------------------------------------------------------------------------------------
+
+SOUNDON = true
+-----------------------------------------------------------------------------------------
+muteButton = display.newImageRect("Images/muteButton.png", 200, 200)
+muteButton.x = display.contentWidth*1.5/10
+muteButton.y = display.contentHeight*1.3/10
+muteButton.isVisible = true
+-----------------------------------------------------------------------------------------
+unmuteButton = display.newImageRect("Images/unmuteButton.png", 200, 200)
+unmuteButton.x = display.contentWidth*1.5/10
+unmuteButton.y = display.contentHeight*1.3/10
+unmuteButton.isVisible = true
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+
+local function Mute(touch)
+    if (touch.phase == "ended") then
+        --pause the sound
+        audio.pause(bkgMusic)
+        -- set the boolean varible to be false (sound is now muted)
+        SOUNDON = false
+        -- hide the mute button 
+        muteButton.isVisible = false
+        -- make the unmute button visible
+        unmuteButton.isVisible = true
+    end
+end
 
 -- Creating Transition Function to Credits Page
 local function CreditsTransition( )       
