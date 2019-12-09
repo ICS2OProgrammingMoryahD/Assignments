@@ -36,6 +36,8 @@ local creditsButton
 local instructionsButton
 local muteButton
 local unmuteButton
+-----------------------------------------------------------------------------------------
+local bkgSound = audio.loadSound("Sounds/PEROXID3.mp3")
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL VARIABLES
@@ -43,29 +45,37 @@ local unmuteButton
 
 SOUNDON = true
 -----------------------------------------------------------------------------------------
-muteButton = display.newImageRect("Images/muteButton.png", 150, 150)
-muteButton.x = display.contentWidth*1.5/10
-muteButton.y = display.contentHeight*1.3/10
+muteButton = display.newImageRect("Images/muteButton.png", 90, 90)
+muteButton.x = 900
+muteButton.y = 70
 muteButton.isVisible = true
 -----------------------------------------------------------------------------------------
-unmuteButton = display.newImageRect("Images/unmuteButton.png", 150, 150)
-unmuteButton.x = display.contentWidth*1.5/10
-unmuteButton.y = display.contentHeight*1.3/10
+unmuteButton = display.newImageRect("Images/unmuteButton.png", 90, 90)
+unmuteButton.x = 900
+unmuteButton.y = 70
 unmuteButton.isVisible = false
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
 
 local function Mute(touch)
+     if (touch.phase == "began") then
+        SOUNDON = true
+        -- hide the mute button 
+        muteButton.isVisible = false
+        -- make the unmute button visible
+        unmuteButton.isVisible = true
+    end
+
     if (touch.phase == "ended") then
         --pause the sound
         audio.pause(bkgMusic)
         -- set the boolean varible to be false (sound is now muted)
         SOUNDON = false
         -- hide the mute button 
-        muteButton.isVisible = false
+        muteButton.isVisible = true
         -- make the unmute button visible
-        unmuteButton.isVisible = true
+        unmuteButton.isVisible = false
     end
 end
 
@@ -145,7 +155,7 @@ function scene:create( event )
     creditsButton = widget.newButton( 
         {
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*7/8,
+            x = 884,
             y = display.contentHeight*9/10,
 
             -- Setting Dimensions
@@ -166,7 +176,7 @@ function scene:create( event )
     instructionsButton = widget.newButton( 
         {
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*1/8,
+            x = 140,
             y = display.contentHeight*9/10,
 
             -- Setting Dimensions
