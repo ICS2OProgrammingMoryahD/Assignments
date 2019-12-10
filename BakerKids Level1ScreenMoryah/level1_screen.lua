@@ -30,10 +30,9 @@ local bkg_image
 local countDownTimer
 local clockText
 local words = 0
-local wordsText
+local pointText
 local lives = 3
 
------------------------------------------------------------------------------------------
 -- the words
 local bakingPowder
 local bakingPowderObject
@@ -53,12 +52,31 @@ local icing
 local icingObject
 local milk
 local milkObject
-local sprinkles
-local sprinklesObject
+local Sprinkle
+local SprinkleObject
 local sugar
 local sugarObject
 local vanilla
 local vanillaObject
+
+local textField
+
+local numIncorrect = 0
+
+local userAnswer
+local correctAnswer
+
+local correctSound = audio.loadSound("Sounds/correct.mp3")
+local correctSoundChannel
+
+local wonSound = audio.loadSound("Sounds/won.mp3")
+local wonSoundChannel
+
+local incorrectSound = audio.loadSound("Sounds/incorrect.mp3")
+local incorrectSoundChannel
+
+local lostSound = audio.loadSound("Sounds/lose.mp3")
+local lostSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL VARIABLES
@@ -73,7 +91,7 @@ secondsLeft = 120
 local function UpdateTime()
     -- decrement the number of seconds
     secondsLeft = secondsLeft - 1
-    --timer.performWithDelay(1000)
+    timer.performWithDelay(1000)
 
     -- display the number of seconds seconds left in the clock object
     clockText.text = secondsLeft .. ""
@@ -103,11 +121,6 @@ local function StartTimer(event)
     countDownTimer.y = 50
 end
 
-local function Words()
-    -- first make the random Words
-    
-end
-
 -- Creating Transitioning Function back to main menu
 local function BackTransition( )
     composer.gotoScene( "main_menu", {effect = "crossFade", time = 500})
@@ -119,28 +132,170 @@ local function Visible()
     heart2.isVisible = true
     heart.isVisible = true
     countDownTimer.isVisible = true
-    wordsText.isVisible = true
-    bakingPowderObject.isVisible = true
-    bakingSodaObject.isVisible = true
-    butterObject.isVisible = true
-    chocolateObject.isVisible = true
-    eggObject.isVisible = true
-    flourObject.isVisible = true
-    foodColouringObject.isVisible = true
-    icingObject.isVisible = true
-    milkObject.isVisible = true
-    sprinklesObject.isVisible = true
-    sugarObject.isVisible = true
-    vanillaObject.isVisible = true
-end
-
-local function Words()
-    -- first make the random Words 
+    pointText.isVisible = true
+    correctObject.isVisible = false
+    incorrectObject.isVisible = false
 end
 
 -- Creating Transitioning Function back to main menu
 local function BackTransition()
     composer.gotoScene( "main_menu", {effect = "crossFade", time = 500})
+end
+
+local function AskQuestion()
+
+    local word = math.random(1,5)
+
+    if (word == 1) then
+        icingObject = display.newText( "Icin_", 512, 148, nil, 99 )
+        icingObject:setTextColor(0.25, 0.25, 0.25)
+
+        correctAnswer = "g"
+
+    elseif (word == 2) then
+        milkObject = display.newText( "Mil_", 512, 148, nil, 99 )
+        milkObject:setTextColor(0.25, 0.25, 0.25)
+
+        correctAnswer = "k"
+
+    
+    elseif (word == 3) then
+        SprinkleObject = display.newText( "Sprinkl_", 512, 148, nil, 99 )
+        SprinkleObject:setTextColor(0.25, 0.25, 0.25)
+
+        correctAnswer = "e"
+
+
+    elseif (word == 4) then
+        sugarObject = display.newText( "Suga_", 512, 148, nil, 99 )
+        sugarObject:setTextColor(0.25, 0.25, 0.25)
+
+        correctAnswer = "r"
+
+    elseif (word == 5) then
+        vanillaObject = display.newText( "Vanill_", 512, 148, nil, 99 )
+        vanillaObject:setTextColor(0.25, 0.25, 0.25)
+
+        correctAnswer = "a"
+
+    end
+end
+
+local function TextField()
+
+    if (event.phase == "began") then
+
+    elseif (event.phase == "submitted") then
+
+        -- if user enters the correct letter
+        if (userAnswer == correctAnswer) then
+
+            -- plays correct sound
+            correctSoundChannel = audio.play(correctSound)
+
+            -- show correct object
+            correctObject.isVisible = true
+
+            -- adds a point
+            points = points + 1
+
+            -- update the points in the display object
+            pointsText.text = "points = " .. points
+
+            -- add timer
+            timer.performWithDelay(1000, Hide)
+
+            -- you win! after 5 points       
+            if (points == 5) then
+
+                wonSoundChannel = audio.play(wonSound)
+
+                -- this object isn't visible
+                correctObject.isVisible = false
+
+                -- win object is Visible
+                --winObject.isVisible = true
+
+                -- add timer
+                timer.performWithDelay(3000, Hide)
+            end
+
+        else -- if user ans is wrong
+
+            -- play sound for the wrong answer
+            incorrectSoundChannel = audio.play(incorrectSound)
+
+            -- show incorrect
+            incorrectObject.isVisible = true
+
+            -- create incorrect text object
+            incorrectObject.text = "Inncorect! The correct answer was " .. correctAnswer .. " .DK "
+
+            -- everytime user gets answer wrong add 1 to numIncorrect
+            numIncorrect = numIncorrect + 1
+
+            -- everytime user gets answer wrong take away 1 life
+            lives = lives - 1
+
+            -- add timer
+            timer.performWithDelay(1000, Hide)
+
+            -- taking away hearts
+            if (lives == 2) then
+
+                -- heart isn't visible
+                heart3.isVisible = false
+
+            elseif (lives == 1) then 
+
+                -- hearts aren't visible
+                heart3.isVisible = false
+                heart2.isVisible = false
+
+            elseif (lives == 0) then 
+
+                lostSoundChannel = audio.play(lostSound)
+
+                -- this isn't visible
+                incorrectObject.isVisible = false
+
+                -- this is visible
+                --loseObject.isVisible = true
+                
+                -- added timer
+                timer.performWithDelay(3000, Hide)  
+
+                -- hearts aren't visible
+                heart3.isVisible = false
+                heart2.isVisible = false
+                heart.isVisible = false
+
+                timer.cancel(countDownTimer)
+            end
+
+            -- display game over after 3 wrong answers
+            if (numIncorrect == 3) then
+
+                lostSoundChannel = audio.play(lostSound)
+
+                -- this isn't visible
+                incorrectObject.isVisible = false
+
+                -- this is visible
+                loseObject.isVisible = true
+                
+                -- added timer
+                timer.performWithDelay(3000, Hide)
+
+                -- hearts aren't visible
+                heart3.isVisible = false
+                heart2.isVisible = false
+                heart.isVisible = false
+            end
+
+
+        end
+    end
 end
 
 -----------------------------------------------------------------------------------------
@@ -152,7 +307,7 @@ function scene:create( event )
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
 
-    -----------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------
 
     -- Insert the background image
     bkg_image = display.newImage("Images/Level1ScreenMoryah.png")
@@ -173,53 +328,29 @@ function scene:create( event )
     heart3.width = 66
     heart3.height = 66
 
-    -----------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------
     -- OBJECT CREATION
-    -----------------------------------------------------------------------------------------
-    -- display thw word texts
-
-    bakingPowderObject = display.newText( "Baking Powder", 205, 100, nil, 44 )
-    bakingPowderObject:setTextColor(1, 1, 1)
-
-    bakingSodaObject = display.newText( "Baking Soda", 177, 200, nil, 44 )
-    bakingSodaObject:setTextColor(1, 1, 1)
-
-    butterObject = display.newText( "Butter", 146, 150, nil, 44 )
-    butterObject:setTextColor(1, 1, 1)
-
-    chocolateObject = display.newText( "Chocolate", 500, 200, nil, 44 )
-    chocolateObject:setTextColor(1, 1, 1)
-
-    eggObject = display.newText( "Egg", 500, 100, nil, 44 )
-    eggObject:setTextColor(1, 1, 1)
-
-    flourObject = display.newText( "Flour", 700, 100, nil, 44 )
-    flourObject:setTextColor(1, 1, 1)
-
-    foodColouringObject = display.newText( "Food Colouring", 460, 150, nil, 44 )
-    foodColouringObject:setTextColor(1, 1, 1)
-
-    icingObject = display.newText( "Icing", 700, 150, nil, 44 )
-    icingObject:setTextColor(1, 1, 1)
-
-    milkObject = display.newText( "Milk", 700, 200, nil, 44 )
-    milkObject:setTextColor(1, 1, 1)
-
-    sprinklesObject = display.newText( "Sprinkles", 900, 100, nil, 44 )
-    sprinklesObject:setTextColor(1, 1, 1)
-
-    sugarObject = display.newText( "Sugar", 900, 150, nil, 44 )
-    sugarObject:setTextColor(1, 1, 1)
-
-    vanillaObject = display.newText( "Vanilla", 900, 200, nil, 44 )
-    vanillaObject:setTextColor(1, 1, 1)
-
+    -------------------------------------------------------------------------------------
     -- display the amount of words as a text object
-    wordsText = display.newText("point = " .. words, 512, 573, nil, 44)
-    wordsText:setTextColor(0, 0, 0)
+    pointText = display.newText("point = " .. words, 512, 573, nil, 44)
+    pointText:setTextColor(0, 0, 0)
 
     clockText = display.newText("" .. secondsLeft, 77, 40, nil, 66)
     clockText:setTextColor(1, 0, 0)
+
+    -- create the correct text object object and make it invisible
+    correctObject = display.newText( "Correct!", display.contentWidth/2, display.contentHeight
+    *2/3, nil, 40 )
+    correctObject:setTextColor(155/255, 42/255, 198/255)
+
+    -- create the incorrect text object object and make it invisible
+    incorrectObject = display.newText( "Incorrect!", display.contentWidth/2, 
+    display.contentHeight*2/3, nil, 40 )
+    incorrectObject:setTextColor(155/255, 42/255, 198/255)
+
+    textField = native.newTextField( display.contentWidth/2, display.contentHeight/2, 
+        150, 80)
+    textField.inputType = "default"
 
     -- Creating Back Button
     backButton = widget.newButton( 
@@ -241,27 +372,14 @@ function scene:create( event )
         onRelease = BackTransition
      } )
 
--------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- Insert images into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( bkg_image ) 
     sceneGroup:insert( backButton )
     sceneGroup:insert( heart )
     sceneGroup:insert( heart2 )
     sceneGroup:insert( heart3 )
-    sceneGroup:insert( wordsText )
-    sceneGroup:insert( bakingPowderObject )
-    sceneGroup:insert( bakingSodaObject )
-    sceneGroup:insert( butterObject )
-    sceneGroup:insert( chocolateObject )
-    sceneGroup:insert( eggObject )
-    sceneGroup:insert( flourObject )
-    sceneGroup:insert( foodColouringObject )
-    sceneGroup:insert( icingObject )
-    sceneGroup:insert( milkObject )
-    sceneGroup:insert( sprinklesObject )
-    sceneGroup:insert( sugarObject )
-    sceneGroup:insert( vanillaObject )
-    sceneGroup:insert( clockText )
+    sceneGroup:insert( pointText )
 
 end --function scene:create( event )
 
@@ -273,24 +391,25 @@ function scene:show( event )
     local sceneGroup = self.view
     local phase = event.phase
 
-    -----------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------
 
     if ( phase == "will" ) then
 
         -- Called when the scene is still off screen (but is about to come on screen).
-    -----------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
 
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
-        -----------------------------------------------------------------------------------------
+        ---------------------------------------------------------------------------------
         -- FUNTION CALLS
-        -----------------------------------------------------------------------------------------
+        ---------------------------------------------------------------------------------
         --call the functions
         StartTimer()
         Visible()
+        AskQuestion()
 
     end
 
@@ -303,14 +422,14 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
 
-    -----------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------
 
     if ( phase == "will" ) then
         -- Called when the scene is on screen (but is about to go off screen).
         -- Insert code here to "pause" the scene.
         -- Example: stop timers, stop animation, stop audio, etc.
 
-    -----------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
@@ -325,15 +444,13 @@ function scene:destroy( event )
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
 
-    -----------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------
 
     -- Called prior to the removal of scene's view ("sceneGroup").
     -- Insert code here to clean up the scene.
     -- Example: remove display objects, save state, etc.
 
 end -- function scene:destroy( event )
-
-
 
 -----------------------------------------------------------------------------------------
 -- EVENT LISTENERS
@@ -343,8 +460,6 @@ scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
-
-
 
 -----------------------------------------------------------------------------------------
 

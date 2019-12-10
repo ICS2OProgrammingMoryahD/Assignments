@@ -37,45 +37,58 @@ local instructionsButton
 local muteButton
 local unmuteButton
 -----------------------------------------------------------------------------------------
-local bkgSound = audio.loadSound("Sounds/PEROXID3.mp3")
+local bkgMusic = audio.loadSound("Sounds/bkg.mp3")
+local bkgMusicChannel
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL VARIABLES
 -----------------------------------------------------------------------------------------
-
-SOUNDON = true
------------------------------------------------------------------------------------------
-muteButton = display.newImageRect("Images/muteButton.png", 90, 90)
-muteButton.x = 900
-muteButton.y = 70
-muteButton.isVisible = true
+--SOUNDON = true
 -----------------------------------------------------------------------------------------
 unmuteButton = display.newImageRect("Images/unmuteButton.png", 90, 90)
 unmuteButton.x = 900
 unmuteButton.y = 70
 unmuteButton.isVisible = false
 -----------------------------------------------------------------------------------------
+muteButton = display.newImageRect("Images/muteButton.png", 90, 90)
+muteButton.x = 900
+muteButton.y = 70
+muteButton.isVisible = true
+-----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
 
-local function Mute(touch)
+function Mute(touch)
      if (touch.phase == "began") then
-        SOUNDON = true
-        -- hide the mute button 
-        muteButton.isVisible = false
         -- make the unmute button visible
         unmuteButton.isVisible = true
-    end
-
-    if (touch.phase == "ended") then
+        -- hide the mute button 
+        muteButton.isVisible = false
         --pause the sound
         audio.pause(bkgMusic)
         -- set the boolean varible to be false (sound is now muted)
         SOUNDON = false
-        -- hide the mute button 
-        muteButton.isVisible = true
+    end
+
+end
+
+function Unmute(touch)
+     if (touch.phase == "began") then
         -- make the unmute button visible
         unmuteButton.isVisible = false
+        -- hide the mute button 
+        muteButton.isVisible = true
+        --pause the sound
+        bkgMusicChannel = audio.play(bkgMusic)
+        -- set the boolean varible to be false (sound is now unmuted)
+        SOUNDON = true
+    end
+
+    if (touch.phase == "ended") then
+        -- make the unmute button visible
+        unmuteButton.isVisible = true
+        -- hide the mute button 
+        muteButton.isVisible = false
     end
 end
 
@@ -88,7 +101,7 @@ end
 
 -- Creating Transition to Level1 Screen
 local function Level1ScreenTransition( )
-    composer.gotoScene( "level1_screen", {effect = "crossFade", time = 1000})
+    composer.gotoScene( "level1_screen", {effect = "crossFade", time = 500})
 end   
 
 -----------------------------------------------------------------------------------------
