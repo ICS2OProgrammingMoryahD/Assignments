@@ -34,6 +34,7 @@ local bkg_image
 local playButton
 local creditsButton
 local instructionsButton
+
 local muteButton
 local unmuteButton
 -----------------------------------------------------------------------------------------
@@ -45,15 +46,7 @@ local bkgMusicChannel
 -----------------------------------------------------------------------------------------
 --SOUNDON = true
 -----------------------------------------------------------------------------------------
-unmuteButton = display.newImageRect("Images/unmuteButton.png", 90, 90)
-unmuteButton.x = 900
-unmuteButton.y = 70
-unmuteButton.isVisible = false
------------------------------------------------------------------------------------------
-muteButton = display.newImageRect("Images/muteButton.png", 90, 90)
-muteButton.x = 900
-muteButton.y = 70
-muteButton.isVisible = true
+
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -204,12 +197,24 @@ function scene:create( event )
             onRelease = InstructionsTransition
         } ) 
 
+    unmuteButton = display.newImageRect("Images/unmuteButton.png", 90, 90)
+    unmuteButton.x = 900
+    unmuteButton.y = 148
+    unmuteButton.isVisible = false
+    -----------------------------------------------------------------------------------------
+    muteButton = display.newImageRect("Images/muteButton.png", 90, 90)
+    muteButton.x = 900
+    muteButton.y = 148
+    muteButton.isVisible = true
+
     -----------------------------------------------------------------------------------------
 
     -- Associating button widgets with this scene
     sceneGroup:insert( playButton )
     sceneGroup:insert( creditsButton )
     sceneGroup:insert( instructionsButton )
+    sceneGroup:insert( unmuteButton )
+    sceneGroup:insert( muteButton )
     
 
 end -- function scene:create( event )   
