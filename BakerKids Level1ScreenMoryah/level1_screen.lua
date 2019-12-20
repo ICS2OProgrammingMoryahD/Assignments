@@ -33,21 +33,9 @@ local points = 0
 local pointsText
 local lives = 3
 
--- the words
-local icing
-local icingObject
-local milk
-local milkObject
-local Sprinkle
-local sprinkleObject
-local sugar
-local sugarObject
-local vanilla
-local vanillaObject
+local questionObject
 
 local textField
-
-local numIncorrect = 0
 
 local userAnswer
 local correctAnswer
@@ -55,24 +43,35 @@ local correctAnswer
 local correctSound = audio.loadSound("Sounds/correct.mp3")
 local correctSoundChannel
 
-local wonSound = audio.loadSound("Sounds/won.mp3")
+local wonSound = audio.loadSound("Sounds/win.mp3")
 local wonSoundChannel
 
 local incorrectSound = audio.loadSound("Sounds/incorrect.mp3")
 local incorrectSoundChannel
 
-local lostSound = audio.loadSound("Sounds/lose.mp3")
-local lostSoundChannel
+local loseSound = audio.loadSound("Sounds/lose.mp3")
+local loseSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL VARIABLES
 -----------------------------------------------------------------------------------------
-TOTALSECONDS = 120
-secondsLeft = 120
+TOTALSECONDS = 60
+secondsLeft = 60
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+
+-- The function that will go to the main menu 
+local function gotoLoseScreen()
+    composer.gotoScene( "lose_screen", {effect = "crossFade", time = 500})
+end
+
+-- The function that will go to the main menu 
+local function gotoWinScreen()
+    composer.gotoScene( "win_screen", {effect = "crossFade", time = 500})
+end
+
 -- function that calls the timer
 local function UpdateTime()
     -- decrement the number of seconds
@@ -91,6 +90,9 @@ local function UpdateTime()
         secondsLeft = TOTALSECONDS
         timer.performWithDelay(1000, Visible)
         timer.cancel(countDownTimer)
+        loseSoundChannel = audio.play(loseSound)
+        composer.gotoScene( "lose_screen", {effect = "crossFade", time = 500})
+
     end
 end
 
@@ -121,11 +123,7 @@ end
 
 local function hideWords()
 
-    icingObject.isVisible = false
-    milkObject.isVisible = false
-    sprinkleObject.isVisible = false 
-    sugarObject.isVisible = false
-    vanillaObject.isVisible = false
+    questionObject.isVisible = false
 end
 
 local function HideCorrectIncorrect ()
@@ -136,35 +134,89 @@ end
 
 local function AskQuestion()
 
-    local word = math.random(1,5)
+    HideCorrectIncorrect()
+
+    local word = math.random(1,15)
 
     if (word == 1) then
-        icingObject.isVisible = true
+        questionObject.text = "ICIN_"
+        --questionObject.isVisible = true
 
-        correctAnswer = "g"
+        correctAnswer = "G"
 
     elseif (word == 2) then
-        milkObject.isVisible = true
+        questionObject.text = "BUTTE_"
+        --questionObject.isVisible = true
 
-        correctAnswer = "k"
+        correctAnswer = "R"
 
-    
     elseif (word == 3) then
-        sprinkleObject.isVisible = true
+        questionObject.text = "SPRINKL_"
 
-        correctAnswer = "e"
-
+        correctAnswer = "E"
 
     elseif (word == 4) then
-        sugarObject.isVisible = true
+        questionObject.text = "SUGA_"
 
-        correctAnswer = "r"
+        correctAnswer = "R"
 
     elseif (word == 5) then
-        vanillaObject.isVisible = true
-        correctAnswer = "a"
+        questionObject.text = "VANILL_"
+
+        correctAnswer = "A"
+
+    elseif (word == 6) then
+        questionObject.text = "MARSHMALL_"
+
+        correctAnswer = "O"
+
+    elseif (word == 7) then
+        questionObject.text = "CHOCOLAT_"
+
+        correctAnswer = "E"
+
+    elseif (word == 8) then
+        questionObject.text = "FLOU_"
+
+        correctAnswer = "R"
+
+    elseif (word == 9) then
+        questionObject.text = "BAKING POWDE_"
+
+        correctAnswer = "R"
+
+    elseif (word == 10) then
+        questionObject.text = "BAKING SOD_"
+
+        correctAnswer = "A"
+
+    elseif (word == 11) then
+        questionObject.text = "FOOD COLOURIN_"
+
+        correctAnswer = "G"
+
+    elseif (word == 12) then
+        questionObject.text = "E_G"
+
+        correctAnswer = "G"
+
+    elseif (word == 13) then
+        questionObject.text = "MI_K"
+
+        correctAnswer = "L"
+
+    elseif (word == 14) then
+        questionObject.text = "SA_T"
+
+        correctAnswer = "L"
+
+    elseif (word == 15) then
+        questionObject.text = "BAKING OI_"
+
+        correctAnswer = "L"
 
     end
+
 end
 
 local function textFieldListener( event )
@@ -174,9 +226,11 @@ local function textFieldListener( event )
 
     elseif (event.phase == "submitted") then
         userAnswer = event.target.text
+        print ("***correctAnswer = " .. correctAnswer)
+        print ("***userAnswer = " .. userAnswer)
 
         -- if user enters the correct letter
-        if (userAnswer == correctAnswer) then
+        if (string.upper(userAnswer) == correctAnswer) then
 
             -- plays correct sound
             correctSoundChannel = audio.play(correctSound)
@@ -191,19 +245,17 @@ local function textFieldListener( event )
             pointsText.text = "points = " .. points
 
             -- add timer
-            timer.performWithDelay(1000, hideWords)
-            timer.performWithDelay(1000, HideCorrectIncorrect)
-            AskQuestion()
+            --timer.performWithDelay(1000, hideWords)
+            --timer.performWithDelay(1000, HideCorrectIncorrect)
+            --AskQuestion()
 
             -- you win! after 5 points       
             if (points == 5) then
-
                 wonSoundChannel = audio.play(wonSound)
+                composer.gotoScene( "win_screen", {effect = "crossFade", time = 500})
+
             else
-
-                timer.performWithDelay(1000, hideWords)
-                AskQuestion()
-
+                timer.performWithDelay(1000, AskQuestion)
             end
         else -- if user ans is wrong
 
@@ -214,42 +266,26 @@ local function textFieldListener( event )
             incorrectObject.isVisible = true
 
             -- create incorrect text object
-            incorrectObject.text = "Inncorect! The correct answer was '" .. correctAnswer .. "' .DK "
-
-            -- everytime user gets answer wrong add 1 to numIncorrect
-            numIncorrect = numIncorrect + 1
+            incorrectObject.text = "Incorrect! The correct answer was " .. correctAnswer
 
             -- everytime user gets answer wrong take away 1 life
             lives = lives - 1
-
-            timer.performWithDelay(1000, hideWords)
-            AskQuestion()
 
             -- taking away hearts
             if (lives == 2) then
 
                 -- heart isn't visible
                 heart.isVisible = false
+                timer.performWithDelay(1000, AskQuestion)
 
             elseif (lives == 1) then 
 
                 -- hearts aren't visible
                 heart.isVisible = false
                 heart2.isVisible = false
+                timer.performWithDelay(1000, AskQuestion)
 
             elseif (lives == 0) then 
-
-                lostSoundChannel = audio.play(lostSound)
-
-                -- this isn't visible
-                incorrectObject.isVisible = false
-
-                -- this is visible
-                --loseObject.isVisible = true
-                
-                -- added timer
-                timer.performWithDelay(1000, HideCorrectIncorrect)
-                timer.performWithDelay(3000, hideWords)  
 
                 -- hearts aren't visible
                 heart.isVisible = false
@@ -258,25 +294,9 @@ local function textFieldListener( event )
 
                 timer.cancel(countDownTimer)
 
-            -- display game over after 3 wrong answers
-            elseif (numIncorrect == 3) then
+                loseSoundChannel = audio.play(loseSound)
+                composer.gotoScene( "lose_screen", {effect = "crossFade", time = 500})
 
-                lostSoundChannel = audio.play(lostSound)
-
-                -- this isn't visible
-                incorrectObject.isVisible = false
-
-                -- this is visible
-                loseObject.isVisible = true
-                
-                -- added timer
-                timer.performWithDelay(1000, HideCorrectIncorrect)
-                timer.performWithDelay(3000, hideWords)
-
-                -- hearts aren't visible
-                heart3.isVisible = false
-                heart2.isVisible = false
-                heart.isVisible = false
             end
         end
         event.target.text = ""
@@ -284,7 +304,7 @@ local function textFieldListener( event )
 end
 
 -----------------------------------------------------------------------------------------
--- GLOBAL SCENE FUNCTIONS
+-- GLOBAL SCENE FUNCTIONS                                                                
 -----------------------------------------------------------------------------------------
 -- The function called when the screen doesn't exist
 function scene:create( event )
@@ -313,48 +333,33 @@ function scene:create( event )
     heart3.width = 66
     heart3.height = 66
 
-    icingObject = display.newText( "Icin_", 512, 148, nil, 99 )
-    icingObject:setTextColor(1, 0, 0)
-    icingObject.isVisible = false
+    questionObject = display.newText( "", 512, 148, nil, 99 )
+    questionObject:setTextColor(1, 0, 0)
+    questionObject.isVisible = true
 
-    milkObject = display.newText( "Mil_", 512, 148, nil, 99 )
-    milkObject:setTextColor(1, 0, 0)
-    milkObject.isVisible = false
-
-    sprinkleObject = display.newText( "Sprinkl_", 512, 148, nil, 99 )
-    sprinkleObject:setTextColor(1, 0, 0)
-    sprinkleObject.isVisible = false 
-
-    sugarObject = display.newText( "Suga_", 512, 148, nil, 99 )
-    sugarObject:setTextColor(1, 0, 0)
-    sugarObject.isVisible = false
-
-    vanillaObject = display.newText( "Vanill_", 512, 148, nil, 99 )
-    vanillaObject:setTextColor(1, 0, 0)
-    vanillaObject.isVisible = false
 
     -------------------------------------------------------------------------------------
     -- OBJECT CREATION
     -------------------------------------------------------------------------------------
     -- display the amount of words as a text object
-    pointsText = display.newText("points = " .. points, 512, 573, nil, 44)
+    pointsText = display.newText("points = " .. points, 512, 38, nil, 55)
     pointsText:setTextColor(0, 0, 0)
 
     clockText = display.newText("" .. secondsLeft, 77, 40, nil, 66)
     clockText:setTextColor(1, 0, 0)
 
     -- create the correct text object object and make it invisible
-    correctObject = display.newText( "Correct!", display.contentWidth/2, display.contentHeight
-    *2/3, nil, 40 )
+    correctObject = display.newText( "Correct!", display.contentWidth/2, display.contentHeight*3.1/7, nil, 40 )
     correctObject:setTextColor(1, 0, 0)
+    correctObject.isVisible = false
 
     -- create the incorrect text object object and make it invisible
-    incorrectObject = display.newText( "Incorrect!", display.contentWidth/2, 
-    display.contentHeight*2/3, nil, 40 )
+    incorrectObject = display.newText( "Incorrect!", display.contentWidth/2, display.contentHeight*3.1/7, nil, 40 )
     incorrectObject:setTextColor(1, 0, 0)
+    incorrectObject.isVisible = false
 
-    textField = native.newTextField( display.contentWidth/2, display.contentHeight/2, 
-        150, 80)
+
+    textField = native.newTextField( display.contentWidth/2, 280, 150, 80)
     textField.inputType = "default"
 
     -- Creating Back Button
@@ -389,11 +394,7 @@ function scene:create( event )
     sceneGroup:insert( clockText )
     sceneGroup:insert( correctObject )
     sceneGroup:insert( incorrectObject )
-    sceneGroup:insert( icingObject )
-    sceneGroup:insert( milkObject )
-    sceneGroup:insert( sprinkleObject )
-    sceneGroup:insert( sugarObject )
-    sceneGroup:insert( vanillaObject )
+    sceneGroup:insert( questionObject )
 
 end --function scene:create( event )
 
@@ -421,7 +422,10 @@ function scene:show( event )
         -- FUNTION CALLS
         ---------------------------------------------------------------------------------
         --call the functions
+        textField.isVisible = true
         textField:addEventListener( "userInput", textFieldListener)
+        points = 0
+        lives = 3
         StartTimer()
         Visible()
         AskQuestion()
@@ -445,6 +449,8 @@ function scene:hide( event )
         -- Example: stop timers, stop animation, stop audio, etc.
 
     -------------------------------------------------------------------------------------
+        textField:removeEventListener( "userInput", textFieldListener)
+        textField.isVisible = false
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
