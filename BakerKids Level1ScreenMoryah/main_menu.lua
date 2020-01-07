@@ -88,6 +88,11 @@ local function Level1ScreenTransition( )
     composer.gotoScene( "level1_screen", {effect = "crossFade", time = 500})
 end   
 
+-- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
+--local function LevelSelectTransition( )
+   -- composer.gotoScene("level_select", {effect = "crossFade", time = 500})
+--end
+
 -----------------------------------------------------------------------------------------
 
 -- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
@@ -142,7 +147,7 @@ function scene:create( event )
             defaultFile = "Images/PlayButtonUnPressedNicR.png", 170, 120,
             overFile = "Images/PlayButtonPressedNicR.png", 170, 120,
 
-            -- When the button is released, call the Level1 screen transition function
+            -- When the button is released, call the level select transition function
             onRelease = Level1ScreenTransition          
         } )
 

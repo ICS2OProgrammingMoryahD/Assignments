@@ -37,6 +37,8 @@ local level2Button
 local level3Button
 local level4Button
 
+local muteButton
+local unmuteButton
 -----------------------------------------------------------------------------------------
 local bkgMusic = audio.loadSound("Sounds/bkg.mp3")
 local bkgMusicChannel
@@ -50,6 +52,32 @@ local bkgMusicChannel
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+
+local function Mute(touch)
+    if (touch.phase == "ended") then
+        -- pause the Sound
+        audio.pause(bkgMusicChannel)
+        -- set the boolean variable to be false (sound is now muted)
+        SOUNDON = true
+        -- hide the mute button
+        muteButton.isVisible = false
+        -- make the unmute button visible
+        unmuteButton.isVisible = true
+    end
+end
+
+local function Unmute(touch)
+    if (touch.phase == "ended") then
+        -- pause the Sound
+        audio.pause(bkgMusicChannel)
+        -- set the boolean variable to be false (sound is now muted)
+        SOUNDON = false
+        -- hide the mute button
+        muteButton.isVisible = true
+        -- make the unmute button visible
+        unmuteButton.isVisible = false
+    end
+end
 
 -- Creating Transition Function to Credits Page
 local function Level1ScreenTransition( )       
@@ -113,8 +141,8 @@ function scene:create( event )
     level1Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*4/8,
-            y = display.contentHeight*9/10,
+            x = 341.33,
+            y = 256,
 
             -- Setting Dimensions
             width = 150,
@@ -134,8 +162,8 @@ function scene:create( event )
     level2Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*4/8,
-            y = display.contentHeight*9/10,
+            x = 682.66,
+            y = 256,
 
             -- Setting Dimensions
             width = 150,
@@ -155,8 +183,8 @@ function scene:create( event )
     level3Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*4/8,
-            y = display.contentHeight*9/10,
+            x = 341.33,
+            y = 512,
 
             -- Setting Dimensions
             width = 150,
@@ -176,8 +204,8 @@ function scene:create( event )
     level4Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*4/8,
-            y = display.contentHeight*9/10,
+            x = 682.66,
+            y = 512,
 
             -- Setting Dimensions
             width = 150,
@@ -191,6 +219,16 @@ function scene:create( event )
             onRelease = Level1ScreenTransition          
         } )
 
+    unmuteButton = display.newImageRect("Images/unmuteButton.png", 90, 90)
+    unmuteButton.x = 900
+    unmuteButton.y = 148
+    unmuteButton.isVisible = false
+    -----------------------------------------------------------------------------------------
+    muteButton = display.newImageRect("Images/muteButton.png", 90, 90)
+    muteButton.x = 900
+    muteButton.y = 148
+    muteButton.isVisible = true
+
     -----------------------------------------------------------------------------------------
 
     -- Associating button widgets with this scene
@@ -198,7 +236,9 @@ function scene:create( event )
     sceneGroup:insert( level2Button )
     sceneGroup:insert( level3Button )
     sceneGroup:insert( level4Button )
-    
+    sceneGroup:insert( unmuteButton )
+    sceneGroup:insert( muteButton )
+
 end -- function scene:create( event )   
 
 -----------------------------------------------------------------------------------------
@@ -225,10 +265,23 @@ function scene:show( event )
     -- Called when the scene is now on screen.
     elseif ( phase == "did" ) then
 
-    -- Insert code here to make the scene come alive.
-    -- Example: start timers, begin animation, play audio, etc.
-    bkgMusicChannel = audio.play(bkgMusic, {loops = -1})   
-    muteButton:addEventListener("touch", Mute)
+        -- Insert code here to make the scene come alive.
+        -- Example: start timers, begin animation, play audio, etc.
+        bkgMusicChannel = audio.play(bkgMusic, {loops= -1})   
+        muteButton:addEventListener("touch", Mute)
+        unmuteButton:addEventListener("touch", Unmute)
+        if ( SOUNDON == true ) then
+            audio.resume(bkgMusicChannel)
+            unmuteButton.isVisible = true
+            muteButton.isVisible = false
+
+        else
+            audio.pause(bkgMusicChannel)
+            unmuteButton.isVisible = false
+            muteButton.isVisible = true
+
+        end
+        
     end
 
 end -- function scene:show( event )
