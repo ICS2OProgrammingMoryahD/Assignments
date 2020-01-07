@@ -148,7 +148,7 @@ function scene:create( event )
             overFile = "Images/PlayButtonPressedNicR.png", 170, 120,
 
             -- When the button is released, call the level select transition function
-            onRelease = InstructionsTransition        
+            onRelease = LevelSelectTransition        
         } )
 
     -----------------------------------------------------------------------------------------

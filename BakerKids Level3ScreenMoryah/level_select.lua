@@ -79,6 +79,10 @@ local function Unmute(touch)
     end
 end
 
+local function BackTransition( )
+    composer.gotoScene( "main_menu", {effect = "crossFade", time = 500})
+end
+
 -- Creating Transition Function to Credits Page
 local function Level1ScreenTransition( )       
     composer.gotoScene( "level1_screen", {effect = "crossFade", time = 500})
@@ -125,13 +129,30 @@ function scene:create( event )
     bkg_image.y = display.contentCenterY
     bkg_image.width = display.contentWidth
     bkg_image.height = display.contentHeight
-
-
-    -- Associating display objects with this scene 
     sceneGroup:insert( bkg_image )
 
-    -- Send the background image to the back layer so all other objects can be on top
-    bkg_image:toBack()
+     -- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = 140,
+        y = display.contentHeight*9/10,
+
+        -- Setting Dimensions
+        width = 150,
+        height = 70,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnpressedMoryah.png",
+        overFile = "Images/BackButtonPressedMoryah.png",
+
+        -- Setting Functional Properties
+        onRelease = BackTransition
+     } )
+
+    -- Associating display objects with this scene 
+    sceneGroup:insert( backButton )
+
 
     -----------------------------------------------------------------------------------------
     -- BUTTON WIDGETS
@@ -174,7 +195,7 @@ function scene:create( event )
             overFile = "Images/2Pressed.png", 170, 120,
 
             -- When the button is released, call the Level1 screen transition function
-            onRelease = Level1ScreenTransition          
+            onRelease = Level2ScreenTransition          
         } )
 
     -----------------------------------------------------------------------------------------
@@ -195,7 +216,7 @@ function scene:create( event )
             overFile = "Images/3Pressed.png", 170, 120,
 
             -- When the button is released, call the Level1 screen transition function
-            onRelease = Level1ScreenTransition          
+            onRelease = Level3ScreenTransition          
         } )
 
     -----------------------------------------------------------------------------------------
@@ -216,7 +237,7 @@ function scene:create( event )
             overFile = "Images/4Pressed.png", 170, 120,
 
             -- When the button is released, call the Level1 screen transition function
-            onRelease = Level1ScreenTransition          
+            onRelease = Level4ScreenTransition          
         } )
 
     unmuteButton = display.newImageRect("Images/unmuteButton.png", 90, 90)

@@ -1,10 +1,10 @@
 -- Creating Scene Object
 -----------------------------------------------------------------------------------------
 --
--- level1_screen.lua
+-- level3_screen.lua
 -- Created by: Moryah
--- Date: nov. 21, 2019
--- Description: This is the level 1 screen of the game.
+-- Date: dec. ??, 2019
+-- Description: This is the level 3 screen of the game.
 -----------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ local widget = require( "widget" )
 
 -----------------------------------------------------------------------------------------
 -- Naming Scene
-sceneName = "level1_screen"
+sceneName = "level3_screen"
 
 -----------------------------------------------------------------------------------------
 -- Creating Scene Object
@@ -27,6 +27,10 @@ local scene = composer.newScene( sceneName )
 -----------------------------------------------------------------------------------------
 -- The local variables for this scene
 local bkg_image
+local heart
+local heart2
+local heart3
+local backButton
 local countDownTimer
 local clockText
 local points = 0

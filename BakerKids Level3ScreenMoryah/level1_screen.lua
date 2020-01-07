@@ -27,6 +27,10 @@ local scene = composer.newScene( sceneName )
 -----------------------------------------------------------------------------------------
 -- The local variables for this scene
 local bkg_image
+local heart
+local heart2
+local heart3
+local backButton
 local countDownTimer
 local clockText
 local points = 0
@@ -395,6 +399,7 @@ function scene:create( event )
     sceneGroup:insert( correctObject )
     sceneGroup:insert( incorrectObject )
     sceneGroup:insert( questionObject )
+
 
 end --function scene:create( event )
 
