@@ -73,7 +73,7 @@ end
 
 -- The function that will go to the main menu 
 local function gotoWinScreen()
-    composer.gotoScene( "win_screen", {effect = "crossFade", time = 500})
+    composer.gotoScene( "YouWin3", {effect = "crossFade", time = 500})
 end
 
 -- function that calls the timer
@@ -143,81 +143,81 @@ local function AskQuestion()
     local word = math.random(1,15)
 
     if (word == 1) then
-        questionObject.text = "CHEES_"
+        questionObject.text = "PE_PERO_I"
         --questionObject.isVisible = true
 
-        correctAnswer = "E"
+        correctAnswer = "PN"
 
     elseif (word == 2) then
-        questionObject.text = "BUTTE_"
+        questionObject.text = "OL_VE OI_"
         --questionObject.isVisible = true
 
-        correctAnswer = "R"
+        correctAnswer = "IL"
 
     elseif (word == 3) then
-        questionObject.text = "FLOU_"
+        questionObject.text = "G_EEN PEP_ERS"
 
-        correctAnswer = "R"
+        correctAnswer = "RP"
 
     elseif (word == 4) then
-        questionObject.text = "PEPPERON_"
+        questionObject.text = "RE_  PEPP_RS"
 
-        correctAnswer = "I"
+        correctAnswer = "DE"
 
     elseif (word == 5) then
-        questionObject.text = "TOMATO SAUC_"
+        questionObject.text = "BU_TE_"
 
-        correctAnswer = "E"
+        correctAnswer = "TR"
 
     elseif (word == 6) then
-        questionObject.text = "SAUSAG_"
+        questionObject.text = "TOMAT_  SA_CE"
 
-        correctAnswer = "E"
+        correctAnswer = "OU"
 
     elseif (word == 7) then
-        questionObject.text = " RED PEPPE_"
+        questionObject.text = "M_SHROO_S"
 
-        correctAnswer = "R"
+        correctAnswer = "UM"
 
     elseif (word == 8) then
-        questionObject.text = "TOMAT_"
+        questionObject.text = "SW_ET ON_ONS"
 
-        correctAnswer = "O"
+        correctAnswer = "EI"
 
     elseif (word == 9) then
-        questionObject.text = "OLIV_"
+        questionObject.text = "G_ILLE_  ZUCCH_NI"
 
-        correctAnswer = "E"
+        correctAnswer = "RDI"
 
     elseif (word == 10) then
-        questionObject.text = "ONIO_"
+        questionObject.text = "JAL_PENO P_PPE_S"
 
-        correctAnswer = "N"
+        correctAnswer = "AER"
 
     elseif (word == 11) then
-        questionObject.text = "MUSHROO_"
+        questionObject.text = "RE_  O_IONS"
 
-        correctAnswer = "M"
+        correctAnswer = "DN"
 
     elseif (word == 12) then
-        questionObject.text = "SA_T"
+        questionObject.text = "ROMA T_MAT_ES"
 
-        correctAnswer = "L"
+        correctAnswer = "OO"
 
     elseif (word == 13) then
-        questionObject.text = "BACO_"
+        questionObject.text = "ROS_ED G_RL_C"
 
-        correctAnswer = "N"
+        correctAnswer = "TAI"
 
     elseif (word == 14) then
-        questionObject.text = "GREEN PEPP_R"
+        questionObject.text = "BRU_CHE_TA"
 
-        correctAnswer = "E"
+        correctAnswer = "CT"
 
     elseif (word == 15) then
-        questionObject.text = "OLIVE OI_"
+        questionObject.text = "PINE_PP_E"
 
-        correctAnswer = "L"
+        correctAnswer = "AL"
 
     end
 
@@ -299,8 +299,7 @@ local function textFieldListener( event )
                 timer.cancel(countDownTimer)
 
                 loseSoundChannel = audio.play(loseSound)
-                composer.gotoScene( "lose_screen", {effect = "crossFade", time = 500})
-
+                gotoLoseScreen()
             end
         end
         event.target.text = ""
